@@ -22,9 +22,12 @@ const startServer = () => {
   app.get("/", async (req, res) => {
     const temperature = await getTemperature();
     const output = await twing.render("index.twig", { temperature });
-
-    res.set("Refresh", "1; url=/");
     res.end(output);
+  });
+
+  app.get("/temperature", async (req, res) => {
+    const temperature = await getTemperature();
+    res.end(JSON.stringify({ temperature }));
   });
 
   app.listen(3000, function () {

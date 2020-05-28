@@ -18,27 +18,43 @@
               justify-content: center;
               color: #282828;
               font-family: Baloo Tamma, cursive;
-              height: 70vh;
+              height: 100vh;
+              width: 100vw;
           }
         
           strong {
-             font-size: 10vw;
+             font-size: 25vw;
           }
 
           span {
-             font-size: 5vw;
+             font-size: 10vw;
           }
-        
-          em {
-              font-size: 1.5vw;
-          }
-        
       </style>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+          const temperatureElement = document.getElementById('temperature');
+
+          const updateTemperature = async () => {
+            let text;
+            try {
+              const response = await fetch('/temperature');
+              const json = await response.json();
+              text = `${json.temperature} °C`;
+            } catch(e) {
+              text = `Fehler!`;
+            }
+            temperatureElement.innerHTML = text;
+          };
+
+          setInterval(updateTemperature, 2000);
+        });
+      </script>
 </head>
 <body>
       <main>
           <strong>🍺</strong>
-          <span>{{ ' ' + temperature|trim }} °C</span>
+          <span id="temperature">lade...</span>
       </main>
   </body>
 </html>
