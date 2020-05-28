@@ -3,6 +3,9 @@ const path = require("path");
 const util = require("util");
 const readFile = util.promisify(fs.readFile);
 const express = require("express");
+const { TwingEnvironment, TwingLoaderFilesystem } = require("twing");
+const loader = new TwingLoaderFilesystem("./templates");
+const twing = new TwingEnvironment(loader);
 
 const getTemperature = async () => {
   const filePath = path.resolve(process.env.SENSOR_FILE);
@@ -17,9 +20,11 @@ const startServer = () => {
   const app = express();
 
   app.get("/", async (req, res) => {
-    const temp = await getTemperature();
+    const temperature = await getTemperature();
+    const output = await twing.render("index.twig", { temperature });
+
     res.set("Refresh", "1; url=/");
-    res.send(`${temp} °C`);
+    res.end(output);
   });
 
   app.listen(3000, function () {
