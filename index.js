@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 const readFile = util.promisify(fs.readFile);
-const filePath = path.join(__dirname, process.env.SENSOR_FILE);
+const filePath = path.resolve(process.env.SENSOR_FILE);
 
 const getTemp = (data) => {
   const [, sensorData] = data.split("\n");
